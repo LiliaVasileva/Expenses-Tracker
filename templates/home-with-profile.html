@@ -24,24 +24,24 @@
     <a class="button add" href="{% url 'expense create' %}">Add Expense</a>
     {% if expenses %}
         <div class="expenses-container">
-        {% for expence in expenses %}
+        {% for expense in expenses %}
             <!-- First Expense Container -->
             <div class="expense-container">
                 <!-- Expense Title -->
-                <h2>{{ expence.title }}</h2>
+                <h2>{{ expense.title }}</h2>
                 <!-- Expense Image -->
-                <img src="{{ expence.image }}"
+                <img src="{{ expense.image }}"
                      alt="description">
                 <!-- Expense Description -->
-                <p>{{ expence.description }}</p>
+                <p>{{ expense.description }}</p>
                 <div class="expense-detail">
                     <div>
                         <!-- Expense Price -->
-                        <p>Price: {{ expence.price|floatformat:2 }}$</p>
+                        <p>Price: {{ expense.price|floatformat:2 }}$</p>
                     </div>
                     <div class="right">
                         <!-- Edit Expense Button -->
-                        <a class="button edit" href="#">Edit</a>
+                        <a class="button edit" href="{% url 'expense edit' expense.pk %}">Edit</a>
                         <!-- Delete Expense Button -->
                         <a class="button delete" href="#">Delete</a>
                     </div>

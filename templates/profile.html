@@ -11,7 +11,7 @@
             {% if not profile.image %}
             <img src="{% static 'images/user.png' %}" alt="profile pic">
             {% else %}
-            <img src="{{ profile.image }}" alt="profile pic" enctype="multipart/form-data">
+            <img src="{{ profile.image.url }}" alt="profile pic" enctype="multipart/form-data">
             {% endif %}
             <p>Total Items Bought: {{ profile_items }}</p>
             <!-- Budget Left -->

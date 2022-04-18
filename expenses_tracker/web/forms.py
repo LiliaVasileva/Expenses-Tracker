@@ -13,3 +13,9 @@ class CreateExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ('title', 'description', 'image', 'price')
+
+
+class EditExpenseForm(forms.ModelForm):
+    class Meta:
+        model = Expense
+        fields = ('title', 'description', 'image', 'price')
