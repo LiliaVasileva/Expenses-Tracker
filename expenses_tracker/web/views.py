@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
-from expenses_tracker.web.forms import CreateProfileForm, CreateExpenseForm, EditExpenseForm
+from expenses_tracker.web.forms import CreateProfileForm, CreateExpenseForm, EditExpenseForm, DeleteExpenseForm, \
+    EditProfileForm
 from expenses_tracker.web.models import Profile, Expense
 
 
@@ -41,7 +42,7 @@ def create_expense(request):
     return render(request, 'expense-create.html', context)
 
 
-def edit_expense(request,pk):
+def edit_expense(request, pk):
     expense = Expense.objects.get(pk=pk)
     if request.method == 'POST':
         form = EditExpenseForm(request.POST, instance=expense)
@@ -60,9 +61,23 @@ def edit_expense(request,pk):
     return render(request, 'expense-edit.html', context)
 
 
+def delete_expense(request, pk):
+    expense = Expense.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = DeleteExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            form.save()
+            return redirect('show home')
 
-def delete_expense(request):
-    pass
+    else:
+        form = DeleteExpenseForm(instance=expense)
+
+    context = {
+        'form': form,
+        'expense': expense,
+    }
+
+    return render(request, 'expense-delete.html', context)
 
 
 def show_profile(request):
@@ -79,7 +94,19 @@ def show_profile(request):
 
 
 def profile_edit(request):
-    pass
+    profile=get_profile()
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST,request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('show profile page')
+    else:
+        form = EditProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'profile-edit.html', context)
 
 
 def delete_profile(request):

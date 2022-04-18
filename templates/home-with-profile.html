@@ -16,9 +16,6 @@
             </ul>
         </div>
     {% endif %}
-    <!-- End Summary -->
-
-    <!-- Headline My Expenses -->
     <h1>My Expenses</h1>
     <!-- Add Expense Button -->
     <a class="button add" href="{% url 'expense create' %}">Add Expense</a>
@@ -36,18 +33,14 @@
                 <p>{{ expense.description }}</p>
                 <div class="expense-detail">
                     <div>
-                        <!-- Expense Price -->
                         <p>Price: {{ expense.price|floatformat:2 }}$</p>
                     </div>
                     <div class="right">
-                        <!-- Edit Expense Button -->
                         <a class="button edit" href="{% url 'expense edit' expense.pk %}">Edit</a>
-                        <!-- Delete Expense Button -->
-                        <a class="button delete" href="#">Delete</a>
+                        <a class="button delete" href="{% url 'expense delete' expense.pk %}">Delete</a>
                     </div>
                 </div>
             </div>
-            <!-- End First Expense Container -->
         {% endfor %}
     {% endif %}
 </div>
