@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-
 from expenses_tracker.web.forms import CreateProfileForm, CreateExpenseForm, EditExpenseForm, DeleteExpenseForm, \
-    EditProfileForm
+    EditProfileForm, DeleteProfileForm
 from expenses_tracker.web.models import Profile, Expense
 
 
@@ -28,6 +27,7 @@ def show_home(request):
 
 
 def create_expense(request):
+    profile = get_profile()
     if request.method == 'POST':
         form = CreateExpenseForm(request.POST)
         if form.is_valid():
@@ -38,11 +38,13 @@ def create_expense(request):
 
     context = {
         'form': form,
+        'profile': profile,
     }
     return render(request, 'expense-create.html', context)
 
 
 def edit_expense(request, pk):
+    profile = get_profile()
     expense = Expense.objects.get(pk=pk)
     if request.method == 'POST':
         form = EditExpenseForm(request.POST, instance=expense)
@@ -56,12 +58,14 @@ def edit_expense(request, pk):
     context = {
         'form': form,
         'expense': expense,
+        'profile': profile,
     }
 
     return render(request, 'expense-edit.html', context)
 
 
 def delete_expense(request, pk):
+    profile = get_profile()
     expense = Expense.objects.get(pk=pk)
     if request.method == 'POST':
         form = DeleteExpenseForm(request.POST, instance=expense)
@@ -75,6 +79,7 @@ def delete_expense(request, pk):
     context = {
         'form': form,
         'expense': expense,
+        'profile': profile,
     }
 
     return render(request, 'expense-delete.html', context)
@@ -94,9 +99,9 @@ def show_profile(request):
 
 
 def profile_edit(request):
-    profile=get_profile()
+    profile = get_profile()
     if request.method == 'POST':
-        form = EditProfileForm(request.POST,request.FILES, instance=profile)
+        form = EditProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect('show profile page')
@@ -105,12 +110,26 @@ def profile_edit(request):
 
     context = {
         'form': form,
+        'profile': profile,
     }
     return render(request, 'profile-edit.html', context)
 
 
 def delete_profile(request):
-    pass
+    profile = get_profile()
+    if request.method == 'POST':
+        form = DeleteProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('show home')
+    else:
+        form = DeleteProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+    return render(request, 'profile-delete.html', context)
 
 
 def create_profile(request):
